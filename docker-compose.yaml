@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - goulashnw
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - 8080:8080 # REST
+    volumes:
+      - ./migrations:/root/migrations
+      - ./config.yml:/root/config.yml
+
+  db:
+    image: mysql/mysql-server:latest
+    networks:
+      - goulashnw
+    volumes:
+      - .mysql-data:/var/lib/mysql
+    env_file:
+      - .env
+
+volumes:
+  .mysql-data:
+    driver: local
+
+networks:
+  goulashnw:
+    driver: bridge

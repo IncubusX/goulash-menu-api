@@ -1,0 +1,11 @@
+database:
+  host: db
+  port: 3306
+  user: docker
+  password: docker
+  name: test_task
+  migrations: migrations
+  driver: mysql
+
+http:
+  port: 8080
