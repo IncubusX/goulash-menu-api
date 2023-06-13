@@ -2,8 +2,8 @@ package service
 
 import (
 	"encoding/json"
+	"github.com/google/go-cmp/cmp"
 	"goulash-menu-api/internal/entity"
-	"reflect"
 	"testing"
 )
 
@@ -166,8 +166,9 @@ func Test_generateMenu(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got, _ := json.Marshal(generateMenu(tt.args.dishMask, tt.args.ingredients)); !reflect.DeepEqual(got, []byte(tt.want)) {
-				t.Errorf("generateMenu() = %v, want %v", got, tt.want)
+			got, _ := json.Marshal(generateMenu(tt.args.dishMask, tt.args.ingredients))
+			if diff := cmp.Diff(got, []byte(tt.want)); diff != "" {
+				t.Errorf(diff)
 			}
 		})
 	}
